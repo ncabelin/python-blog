@@ -5,7 +5,6 @@
 #       - create Keywords database
 # 3. Add column with list of keyword tags - query all unique tags
 
-from pprint import pprint
 import os
 import jinja2
 import webapp2
@@ -240,7 +239,7 @@ class SignUp(Handler):
 
 class Login(Handler):
     def get(self):
-        username = self.request.get('username') or None
+        username = self.request.get('username') or ''
         status = self.request.get('status') or None
 
         self.logout('user_id')
@@ -560,15 +559,12 @@ class MainHandler(Handler):
         user_id = None
         posts = Post.all().order('-date_added')
 
-        # post_cursor = memcache.get('post_cursor')
-        # if post_cursor:
-        #     posts.with_cursor(start_cursor = post_cursor)
         if u:
             user_logged = u.username
             user_id = u.key().id()
 
         results = posts.fetch(limit=10)
-        # Get updated cursor and store it for next time
+        # Get updated cursor and store it for the first time for pagination
         post_cursor = posts.cursor()
         memcache.set('post_cursor', post_cursor)
 

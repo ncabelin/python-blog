@@ -42,8 +42,8 @@
   <div class="row">
     <div class="col-md-12">
       <br><br>
-      {% if posts | length == 0 or posts | length < 10 or page_number != 1 %}
-        <a href="/" class="pull-right">No more posts. Click here to go to page 1</a>
+      {% if posts | length == 0 or posts | length < 10 %}
+        <a href="/" class="pull-right">End of posts. Click here to go to page 1</a>
       {% else %}
         <a href="/page/{{ page_number }}#posts" class="pull-right">More posts...</a>
       {% endif %}
