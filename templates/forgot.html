@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Change Password</h1>
+      <p>Please select security question and fill in security answer to reset password</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form method="POST" id="forgot">
+        <div class="form-group">
+          <label for="name">Username :</label>
+          <input type="text" name="username" id="name" class="form-control" value="{{username}}">
+        </div>
+        <div class="form-group">
+          <label for="sec_question">Security Question : <small>(Select one)</small></label><br>
+          <select name="security_q" form="forgot">
+            <option value="pet" selected="selected">What was your first pet's name?</option>
+            <option value="car">What was your first car's make and model?</option>
+            <option value="singer">Who is your favorite singer?</option>
+            <option value="food">What is your favorite food?</option>
+            <option value="color">What is your least favorite color?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="security_a">Security Answer :</label>
+          <input type="text" name="security_a" id="security_a" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% if message: %}
+        <br>
+        <div class="alert alert-danger">{{message}}</div>
+      {% endif %}
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+              <a href="/login" class="sub_menu">Go to Login page</a>
+            </div>
+            <div class="col-md-6">
+              <a href="/signup" class="sub_menu pull-right">Signup for a free account</a>
+            </div>
+          </div>
+        </div>
+        <br><br>
+    </div>
+  </div>
+</div>
+{% endblock %}

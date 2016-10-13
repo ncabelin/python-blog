@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1>Posts for Blog ( {{ blog_name }} ):</h1>
+      <a href="/newpost?id={{ blog_id }}&blog={{ blog_name }}" class="btn btn-primary">New Post</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+      {% for post in current_posts: %}
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="well">
+                <h2>{{ post.subject }} <small>by {{ post.username }}</small></h2>
+                <h5>{{ post.content | firstline }}...</h5>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6">
+                      {% if post.pic: %}
+                        <img src="{{ post.pic }}" class="img-responsive">
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <h6>{{ post.likes }} likes, last modified - {{ post.date_modified | standard_date }}</h6>
+                  <form method="post" style="display: inline;">
+                    <input type="hidden" name="post_edit" value="{{ post.key().id() }}">
+                    <input type="hidden" name="blog_id" value="{{ blog_id }}">
+                    <input type="hidden" name="blog_name" value="{{ blog_name }}">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-pencil fa-lg"></i></button>
+                  </form>
+                  <a href="/view?p={{ post.key().id() }}&b={{ blog_id }}&u={{ post.user_id }}" class="btn btn-info">View</a>
+                  <form method="post" style="display: inline;">
+                    <input type="hidden" name="post_delete" value="{{ post.key().id() }}">
+                    <input type="hidden" name="blog_id" value="{{ blog_id }}">
+                    <input type="hidden" name="blog_name" value="{{ blog_name }}">
+                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash fa-lg"></i></button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% if not current_posts: %}
+        <div class="well">
+          <h3>No Posts yet</h3>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <h1>All Posts by {{ username }} :</h1>
+              {% if username == user_logged:%}
+                <a href="/newpost" class="btn btn-success">Add new post</a>
+              {% endif %}
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              {% for post in posts: %}
+                <div>
+                  <h2><a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}">{{ post.subject }}</a></h2>
+                  <h6>{{ post.likes }} likes, last modified - {{ post.date_modified | standard_date }}</h6>
+                  {% if post.pic: %}
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <img src="{{ post.pic }}" class="img-responsive">
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <p>{{ post.content | firstline }}... </p><a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}" class="btn btn-primary btn-xs">read</a>
+                    {% if user_logged == post.username: %}
+                    <a href="/editpost?pid={{ post.key().id() }}" class="btn btn-success btn-xs">edit</a>
+                    {% endif %}
+                  <hr>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

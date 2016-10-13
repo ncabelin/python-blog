@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <br>
+      <div>
+        <h2>{{ post.subject }} <small>by <u><a href="/viewuserposts?u={{ post.user_id }}">{{ post.username }}</a></u></small></h2>
+        <h6>{{ post.likes }} likes, last modified - {{ post.date_modified | standard_date }}
+        {% if user_logged == post.username %} &nbsp;
+          <span> <a href="/editpost?pid={{ post.key().id() }}" class="btn btn-primary btn-xs">edit / delete</a></span>
+        {% endif %}
+        {% if post.pic: %}</h6>
+          <img src="{{ post.pic }}" class="img-responsive"><br>
+        {% endif %}
+        <div class="blog_post">{{ post.content | markdown | safe }}</div>
+      </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+  <div class="row" id="likes">
+    <div class="col-md-8 col-md-offset-2">
+      <hr>
+      {% if user_logged: %}
+        <form method="POST" action="/like" style="display: inline;">
+          <input type="hidden" name="post_id" value="{{ post.key().id() }}">
+          <input type="hidden" name="username" value="{{ post.username }}">
+          <input type="hidden" name="user_id" value="{{ post.user_id }}">
+          <button type="submit" class="btn btn-success">{{ post.likes }} <i class="fa fa-thumbs-o-up fa-lg"></i></button>
+        </form>
+      {% else: %}
+      {{ post.likes }} <i class="fa fa-thumbs-o-up fa-lg"></i> {% if post.likes == 1: %} Like{% else: %} Likes{% endif %}
+      {% endif %}
+      {% if message: %}
+        <br><br>
+        <div class="alert alert-danger">{{ message }}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row" id="comments">
+    <div class="col-md-6 col-md-offset-3">
+      {% if user_logged: %}
+        {% if comment: %}
+        <h4 class="center">Edit Comment :</h4>
+        <form method="POST" action="editcomment">
+          <input type="hidden" name="comment_id" value="{{ comment.key().id() }}">
+          <div class="form-group">
+            <textarea rows="3" type="text" class="form-control" name="edited_content" placeholder="content">{{ comment.content }}</textarea>
+          </div>
+          <input type="hidden" name="post_id" value="{{ post.key().id() }}">
+          <input type="hidden" name="user_id" value="{{ post.user_id }}">
+          <div class="btn-group">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <label for="delete" class="btn btn-danger">Delete</label>
+          </div>
+        </form>
+        <form method="POST" action="/deletecomment">
+          <input type="hidden" name="comment_id" value="{{ comment.key().id() }}">
+          <input type="hidden" name="post_id" value="{{ post.key().id() }}">
+          <input type="hidden" name="user_id" value="{{ post.user_id }}">
+          <input class="hidden" type="submit" id="delete">
+        </form>
+        {% else: %}
+        <h4 class="center">Comments :</h4>
+        <form method="POST" action="/comment">
+          <div class="form-group">
+            <textarea rows="3" name="new_comment" class="form-control"></textarea>
+          </div>
+          <input type="hidden" name="post_id" value="{{ post.key().id() }}">
+          <input type="hidden" name="username" value="{{ post.username }}">
+          <input type="hidden" name="user_id" value="{{ post.user_id }}">
+          <button type="submit" class="btn btn-primary">Submit</button><br>
+          <br>
+        </form>
+        {% endif %}
+      {% else: %}
+        <p>( Login to post a comment or like )</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <br>
+      {% if not comments: %}
+        <p>( No Comments )</p>
+      {% endif %}
+      {% for c in comments: %}{% for line in c.content.splitlines() %}{{ line }}<br>{% endfor %}{% if c.username == user_logged: %}
+            <h5><i>posted by <strong>{{ c.username }} - </strong></i><br><br>
+              ( <a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}&c={{ c.key().id() }}&#comments"><u>Edit/Delete</u></a> )
+            </h5><br>
+          {% else: %}
+            <h5><i>posted by <strong>{{ c.username }}</strong></i></h5><br><hr>
+          {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

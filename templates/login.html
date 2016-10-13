@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 bordered">
+      <form method="POST" class="form-box">
+      <h1 class="text-center">Login</h1>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" class="form-control" value="{{ username }}">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" class="form-control">
+        </div>
+        <div class="checkbox">
+          <label for="remember"><input type="checkbox" name="remember">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        <br><br>
+      {% if status == 'logged_in': %}
+        <div class="alert alert-success">Logged in <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% elif status == 'wrong_pwd': %}
+        <div class="alert alert-danger">Wrong username and/or password. Try again <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% elif status == 'wrong_user': %}
+        <div class="alert alert-danger">Unknown username. Please sign up <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% elif status == 'blank': %}
+        <div class="alert alert-danger">Please enter both username and password <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% elif status == 'signedup': %}
+        <div class="alert alert-success">Succesfully signed up, Please log in <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% elif status == 'logout': %}
+        <div class="alert alert-success">Succesfully logged out <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% endif %}
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+              <a href="/forgot" class="sub_menu">Forgot password</a><br><br>
+            </div>
+            <div class="col-md-6">
+              <a href="/signup" class="sub_menu">Signup for a free account</a>
+            </div>
+          </div>
+        </div>
+      </form>
+        <br><br>
+    </div>
+  </div>
+</div>
+{% endblock %}

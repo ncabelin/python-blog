@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row foreground">
+    <div class="col-md-12 text-center">
+      <h1 class="title">Welcome to Mindwelder Blogs!</h1>
+      {% if user_logged %}
+        <a href="/viewuserposts?u={{ user_id }}" class="btn btn-primary btn-lg white">My Posts</a>
+        <a href="/newpost" class="btn btn-success btn-lg white">Add Post</a>
+      {% else %}
+        <a href="/login" class="btn btn-primary btn-lg white">Login</a> or
+        <a href="/signup" class="btn btn-primary btn-lg white">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2><i><u>Recent Posts</u> :</i></u></h2>
+    </div>
+  </div>
+  <div class="row" id="posts">
+    {% for post in posts %}
+    <div class="col-md-6 item">
+      <div class="row">
+      <hr>
+        <div class="col-md-8">
+          <a href="/view?p={{ post.key().id() }}&u={{ post.user_id }}" class="posts"><h3>{{ post.subject }}</h3></a>
+            <h5>{{ post.content | firstline }}...</h5>
+            <h5><i>Posted by <a href="/viewuserposts?u={{ post.user_id }}"><u>{{ post.username }}</u></a> on {{ post.date_modified.date() | standard_date }}</i></h5>
+        </div>
+        <div class="col-md-4">
+          {% if post.pic: %}
+            <img src="{{ post.pic }}" class="img-responsive pull-right">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <br><br>
+      {% if posts | length == 0 or posts | length < 10 or page_number != 1 %}
+        <a href="/" class="pull-right">No more posts. Click here to go to page 1</a>
+      {% else %}
+        <a href="/page/{{ page_number }}#posts" class="pull-right">More posts...</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

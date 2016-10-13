@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form method="POST" id="signupform" class="form-box">
+        <h1 class="text-center">Signup</h1>
+        <div class="form-group">
+          <label for="name" class="sr-only">Username :</label>
+          <input type="text" name="username" id="name" class="form-control" value="{{username}}" placeholder="Username">
+        </div>
+        <div class="form-group">
+          <label for="email" class="sr-only">E-mail : <small>(Optional)</small></label>
+          <input type="text" name="email" id="email" class="form-control" value="{{email}}" placeholder="E-mail - (optional)">
+        </div>
+        <div class="form-group">
+          <label for="password" class="sr-only">Password :</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password - must be at least 8 characters">
+        </div>
+        <div class="form-group">
+          <label for="verify" class="sr-only">Verify Password :</label>
+          <input type="password" name="verify" id="verify" class="form-control" placeholder="Verify Password">
+        </div>
+        <div class="form-group">
+          <label for="sec_question">Security Question : <small>(Select one)</small></label><br>
+          <select name="security_q" form="signupform">
+            <option value="pet" selected="selected">What was your first pet's name?</option>
+            <option value="car">What was your favorite car's nickname?</option>
+            <option value="singer">Who is your second most favorite singer?</option>
+            <option value="food">What is your favorite food?</option>
+            <option value="color">What is your least favorite color?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="security_a" class="sr-only">Security Answer :</label>
+          <input type="text" name="security_a" id="security_a" class="form-control" placeholder="Security Answer">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="/" class="btn btn-primary">Cancel</a>
+      </form>
+      {% if message: %}
+        <br>
+        <div class="alert alert-danger">{{ message }}</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
